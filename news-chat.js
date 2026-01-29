@@ -23,15 +23,16 @@
           serverStatus.className = "status ok";
         })
         .catch(function () {
-          serverStatus.textContent = "❌ 서버 연결 안 됨. 터미널에서 node news-server.js 실행 후 새로고침.";
+          serverStatus.textContent = "❌ API 연결 안 됨. (로컬: node news-server.js / Vercel: 환경변수 확인 후 배포)";
           serverStatus.className = "status err";
         });
     }
   }
 
-  // 파일로 열었으면 서버 주소로 열어야 한다고 안내
+  // 파일로 열었거나(로컬) localhost/vercel이 아닐 때만 로컬 실행 안내
+  var isVercel = (window.location.hostname || "").endsWith(".vercel.app");
   var isFileOrWrongOrigin = window.location.protocol === "file:" ||
-    (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1");
+    ((window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") && !isVercel);
   if (isFileOrWrongOrigin) {
     var banner = document.createElement("div");
     banner.className = "warnBanner";
